@@ -1,0 +1,286 @@
+# Apache Ossie (incubating) — semantisch model
+# Core Metadata Specification versie 0.2.0.dev0
+# https://github.com/apache/ossie/blob/main/core-spec/spec.md
+#
+# Use case: bloemenwebshop "Knol & Bloei"
+# Dit model is de SINGLE SOURCE OF TRUTH voor metrics en dimensies.
+# Zowel de demo-app (CustomTkinter), de CLI als een AI-agent lezen ditzelfde bestand.
+
+version: 0.2.0.dev0
+name: knol_en_bloei
+description: Verkoopanalyse voor bloemenwebshop "Knol & Bloei" (omzet, volumes, klanten en producten)
+
+ai_context:
+  instructions: >
+    Gebruik dit model voor alle verkoopvragen van Knol & Bloei.
+    Bedragen zijn in euro's (incl. btw). "Omzet" betekent altijd SUM(regel_bedrag)
+    over orderregels, inclusief korting. Gebruik bestel_maand voor maandrapportages.
+  synonyms:
+    - verkoopanalyse
+    - sales
+  examples:
+    - "Wat is de omzet per categorie?"
+    - "Hoeveel orders zijn er per maand geplaatst?"
+    - "Welke stad geeft het meeste geld uit?"
+
+datasets:
+  # ---------------------------------------------------------------- fact
+  - name: orderregels
+    source: webshop.orderregels
+    primary_key: [bestelling_id, regel_nr]
+    description: Één rij per besteld artikel op een bestelling (feittabel)
+    ai_context:
+      synonyms:
+        - orderregels
+        - verkoopregels
+        - artikelen
+    fields:
+      - name: bestelling_id
+        expression:
+          sql: bestelling_id
+        datatype: Integer
+        description: Verwijzing naar de bestelling
+
+      - name: regel_nr
+        expression:
+          sql: regel_nr
+        datatype: Integer
+        description: Regelnummer binnen de bestelling
+
+      - name: product_id
+        expression:
+          sql: product_id
+        datatype: Integer
+        description: Verwezen product
+
+      - name: aantal
+        expression:
+          sql: aantal
+        datatype: Integer
+        description: Aantal stuks
+        ai_context:
+          synonyms: ["stuks", "verkocht aantal"]
+
+      - name: prijs_per_stuk
+        expression:
+          sql: prijs_per_stuk
+        datatype: Decimal
+        description: Brutoprijs per stuk in euro's
+
+      - name: korting
+        expression:
+          sql: korting
+        datatype: Decimal
+        description: Kortingspercentage op de regel (0.0 - 1.0)
+
+      - name: regel_bedrag
+        expression:
+          sql: aantal * prijs_per_stuk * (1 - korting)
+        datatype: Decimal
+        description: Nettobedrag van de regel (na korting)
+        ai_context:
+          synonyms: ["regelomzet", "nettobedrag"]
+
+    # Dataset-scope metrics: verwijzen naar eigen velden met korte naam
+    metrics:
+      - name: omzet
+        expression:
+          sql: SUM(regel_bedrag)
+        datatype: Decimal
+        description: Totale netto-omzet (na korting)
+        ai_context:
+          synonyms: ["omzet", "revenue", "verkopen", "omzet in euro"]
+
+      - name: bruto_omzet
+        expression:
+          sql: SUM(aantal * prijs_per_stuk)
+        datatype: Decimal
+        description: Totale brutomzet (voor korting)
+        ai_context:
+          synonyms: ["brutomzet"]
+
+      - name: verkochte_stukken
+        expression:
+          sql: SUM(aantal)
+        datatype: Integer
+        description: Totaal aantal verkochte stuks
+        ai_context:
+          synonyms: ["verkochte stuks", "volume", "aantal verkocht"]
+
+      - name: gemiddelde_korting
+        expression:
+          sql: AVG(korting)
+        datatype: Float
+        description: Gemiddeld kortingspercentage per verkochte regel
+        ai_context:
+          synonyms: ["gemiddelde korting", "kortingspercentage"]
+
+  # ------------------------------------------------------------ dimensies
+  - name: bestellingen
+    source: webshop.bestellingen
+    primary_key: [bestelling_id]
+    description: Bestelloverzicht (kop van de bestelling)
+    ai_context:
+      synonyms: ["orders", "bestellingen"]
+    fields:
+      - name: bestelling_id
+        expression:
+          sql: bestelling_id
+        datatype: Integer
+        description: Unieke bestelidentifier
+
+      - name: klant_id
+        expression:
+          sql: klant_id
+        datatype: Integer
+        description: Bestellende klant
+
+      - name: besteldatum
+        expression:
+          sql: besteldatum
+        datatype: Date
+        dimension:
+          is_time: true
+        description: Datum van bestelling
+        ai_context:
+          synonyms: ["besteldatum", "datum"]
+
+      - name: bestel_maand
+        expression:
+          sql: substr(CAST(besteldatum AS TEXT), 1, 7)
+        datatype: String
+        dimension:
+          is_time: true
+        description: Maand van bestelling (YYYY-MM)
+        ai_context:
+          synonyms: ["maand", "per maand"]
+
+      - name: bezorgd
+        expression:
+          sql: bezorgd
+        datatype: Boolean
+        description: Is de bestelling geleverd? (1=ja)
+
+    metrics:
+      - name: aantal_bestellingen
+        expression:
+          sql: COUNT(DISTINCT source.bestelling_id)
+        description: Aantal bestellingen (unieke bestellingen)
+        ai_context:
+          synonyms: ["aantal bestellingen", "aantal orders", "orders", "bestellingen"]
+          examples: ["Hoeveel orders zijn er per maand geplaatst?"]
+
+  - name: producten
+    source: webshop.producten
+    primary_key: [product_id]
+    description: Productcatalogus van Knol & Bloei
+    ai_context:
+      synonyms: ["assortiment", "producten"]
+    fields:
+      - name: product_id
+        expression:
+          sql: product_id
+        datatype: Integer
+        description: Productnummer
+
+      - name: productnaam
+        expression:
+          sql: naam
+        datatype: String
+        description: Naam van het product
+        ai_context:
+          synonyms: ["product", "naam"]
+
+      - name: categorie
+        expression:
+          sql: categorie
+        datatype: String
+        description: Productcategorie (bollen, snijbloemen, zaden, kamerplanten)
+        ai_context:
+          synonyms: ["categorie", "soort", "productgroep"]
+
+      - name: listenprijs
+        expression:
+          sql: prijs
+        datatype: Decimal
+        description: Catalogusprijs per stuk
+
+  - name: klanten
+    source: webshop.klanten
+    primary_key: [klant_id]
+    description: Klantenbestand van de webshop
+    ai_context:
+      synonyms: ["kopers", "klanten"]
+    fields:
+      - name: klant_id
+        expression:
+          sql: klant_id
+        datatype: Integer
+        description: Klantnummer
+
+      - name: klantnaam
+        expression:
+          sql: naam
+        datatype: String
+        description: Naam van de klant
+        ai_context:
+          synonyms: ["klant", "naam"]
+
+      - name: stad
+        expression:
+          sql: stad
+        datatype: String
+        description: Woonplaats van de klant
+        ai_context:
+          synonyms: ["stad", "plaats", "regio"]
+
+      - name: segment
+        expression:
+          sql: segment
+        datatype: String
+        description: Klantsegment (particulier of zakelijk)
+        ai_context:
+          synonyms: ["segment", "klanttype"]
+
+# --------------------------------------------------------------- joins
+relationships:
+  - name: regels_naar_bestellingen
+    from: orderregels
+    to: bestellingen
+    from_columns: [bestelling_id]
+    to_columns: [bestelling_id]
+
+  - name: regels_naar_producten
+    from: orderregels
+    to: producten
+    from_columns: [product_id]
+    to_columns: [product_id]
+
+  - name: bestellingen_naar_klanten
+    from: bestellingen
+    to: klanten
+    from_columns: [klant_id]
+    to_columns: [klant_id]
+
+# Model-scope metrics: combineren velden over meerdere datasets (dataset.veld)
+metrics:
+  - name: omzet_per_klant
+    expression:
+      sql: SUM(orderregels.regel_bedrag) / COUNT(DISTINCT klanten.klant_id)
+    datatype: Decimal
+    description: Gemiddelde besteedbare omzet per klant
+    ai_context:
+      synonyms: ["omzet per klant", "ARPU", "gemiddelde besteding"]
+
+  - name: gemiddelde_orderwaarde
+    expression:
+      sql: SUM(orderregels.regel_bedrag) / COUNT(DISTINCT bestellingen.bestelling_id)
+    datatype: Decimal
+    description: Gemiddeld besteedbedrag per bestelling
+    ai_context:
+      synonyms: ["gemiddelde orderwaarde", "average order value", "AOV"]
+
+# Vendor-extensies: door Ossie gedragen, maar niet geïnterpreteerd
+custom_extensions:
+  - vendor_name: DEMO
+    data: '{"database": "sqlite", "path": "data/webshop.db", "dialect_voorkeur": ["SQLITE", "OSSIE_SQL_2026"]}'

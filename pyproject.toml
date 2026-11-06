@@ -1,0 +1,12 @@
+[project]
+name = "apache-ossie-demo"
+version = "0.1.0"
+description = "Demo van Apache Ossie (incubating) met een Nederlandstalige webshop-use-case, SQLite en een CustomTkinter-UI"
+requires-python = ">=3.9"
+dependencies = [
+    "pyyaml>=6.0",
+    "customtkinter>=5.2.0",
+]
+
+[tool.uv]
+package = false

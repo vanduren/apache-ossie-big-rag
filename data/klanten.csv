@@ -1,0 +1,41 @@
+klant_id,naam,stad,segment
+1,Sanne de Vries,Eindhoven,zakelijk
+2,Willem Bakker,Haarlem,zakelijk
+3,Renske Jansen,Amsterdam,zakelijk
+4,Femke Brouwer,Arnhem,zakelijk
+5,Dirk de Wit,Maastricht,zakelijk
+6,Guus Mulder,Amsterdam,particulier
+7,Lisa Hendriks,Groningen,particulier
+8,Dirk Bos,Rotterdam,zakelijk
+9,Sanne Vos,Groningen,particulier
+10,Anna van Leeuwen,Haarlem,zakelijk
+11,Sjoerd van Dijk,Haarlem,particulier
+12,Eva Vos,Arnhem,zakelijk
+13,Pieter Jansen,Utrecht,particulier
+14,Pieter de Boer,Rotterdam,particulier
+15,Thijs Vos,Den Haag,particulier
+16,Dirk Mulder,Rotterdam,particulier
+17,Lisa de Wit,Utrecht,zakelijk
+18,Sjoerd Mulder,Haarlem,zakelijk
+19,Kees Jansen,Utrecht,particulier
+20,Kees Peters,Eindhoven,zakelijk
+21,Guus Bos,Utrecht,particulier
+22,Sjoerd van Leeuwen,Den Haag,particulier
+23,Femke de Wit,Haarlem,particulier
+24,Guus Hendriks,Arnhem,particulier
+25,Femke Visser,Haarlem,particulier
+26,Anna Bakker,Den Haag,particulier
+27,Renske Vermeer,Rotterdam,particulier
+28,Eva van Leeuwen,Haarlem,particulier
+29,Maud de Vries,Rotterdam,particulier
+30,Maud Mulder,Groningen,zakelijk
+31,Renske Smit,Leiden,zakelijk
+32,Bram Brouwer,Den Haag,particulier
+33,Sanne de Groot,Haarlem,particulier
+34,Willem Vos,Den Haag,particulier
+35,Aad de Vries,Arnhem,particulier
+36,Jan Bakker,Groningen,particulier
+37,Noor de Boer,Amsterdam,zakelijk
+38,Guus van Dijk,Rotterdam,particulier
+39,Pieter de Wit,Den Haag,zakelijk
+40,Lieke de Wit,Den Haag,particulier

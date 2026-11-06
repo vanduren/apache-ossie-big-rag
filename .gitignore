@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# gegenereerde database (kan hersteld worden met scripts/bouw_database.py)
+# data/webshop.db wordt meegecommit zodat de demo direct werkt
+
+# RAG-index van ai_demo.py (wordt automatisch herbouwd uit het Ossie-model)
+rag.db
+
+# roms
+.DS_Store
