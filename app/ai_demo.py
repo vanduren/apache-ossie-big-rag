@@ -46,7 +46,10 @@ VOORBEELDVRAAG_DEFAULTS = [
     "Hoeveel orders zijn er per maand geplaatst?",
     "Welke stad geeft het meeste geld uit?",
     "Wat is de gemiddelde orderwaarde per klantsegment?",
-    "Hoeveel stuks gaan er per maand weg?",
+    "Wat is de brutomarge per leverancier?",
+    "Hoe lang duurt de bezorging gemiddeld per bezorger?",
+    "Hoe tevreden zijn klanten per productcategorie?",
+    "Wat zijn de bezorgkosten per maand?",
 ]
 
 # --------------------------------------------------------------------------

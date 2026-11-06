@@ -25,8 +25,10 @@ definities. write once, query anywhere.
 
 1. Wijs op `models/knol_en_bloei.ossie.yaml` (rechtspaneel = echte YAML).
 2. Loop de onderdelen van de core-spec langs:
-   - **datasets** — fact (`orderregels`) + dimensies, elk met een `source`
-     naar de fysieke SQLite-tabel;
+   - **datasets** — fact (`orderregels`) plus feitten voor bezorging
+     (`verzendingen`) en klanttevredenheid (`beoordelingen`), en de dimensies
+     `bestellingen`, `producten`, `leveranciers` en `klanten`, elk met een
+     `source` naar de fysieke SQLite-tabel;
    - **fields** — let op `regel_bedrag = aantal * prijs_per_stuk * (1 - korting)`:
      *dit* is de enige plaats waar "netto-omzet per regel" bestaat;
    - **metrics** — dataset-scope (`omzet`) en model-scope
@@ -53,7 +55,13 @@ definities. write once, query anywhere.
 4. **Tovertrick 2 (model-scope):** kies `gemiddelde_orderwaarde` × `klanten.stad`.
    De query sprent nu twee hops: `orderregels → bestellingen → klanten` —
    alle joins netjes uit het model gehaald.
-5. Zet de switch **"alleen bezorgde bestellingen"** aan — dezelfde pipeline,
+5. **Tovertrick 3 (inhoud groeit mee):** kies `brutomarge` × `leveranciers.land`.
+   De compiler vindt vanzelf het drietal joins `orderregels → producten →
+   leveranciers` en trekt per land de inkoopprijs van de verkoopprijs af —
+   in een nieuw dataset dat er bij de eerste demo-versie nog niet eens was.
+   Bonus: `gemiddelde_levertijd` × `verzendingen.bezorger` of
+   `gemiddelde_sterren` × `producten.categorie` — dezelfde machine, nieuwe vragen.
+6. Zet de switch **"alleen bezorgde bestellingen"** aan — dezelfde pipeline,
    nu met `WHERE bestellingen.bezorgd = 1`.
 
 ## Akte 3 — de AI-vraag (3 min, tabblad **🤖 Vraag via AI-context**)
@@ -66,7 +74,8 @@ definities. write once, query anywhere.
    Boodschap: een agent kiest alleen uit goedgekeurde definities — geen
    verzinnen, dus geen hallucinaties.
 3. Klik een paar voorbeeldknoppen door ("omzet per categorie", "gemiddelde
-   orderwaarde per stad").
+   orderwaarde per stad", "wat is de brutomarge per leverancier", "gemiddelde
+   levertijd per bezorger").
 
 ## Akte 4 — "query anywhere" live (2 min, terminal)
 

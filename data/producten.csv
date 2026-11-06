@@ -1,23 +1,58 @@
-product_id,naam,categorie,prijs
-1,Tulp 'Paul Scherer' (25 bollen),bollen,7.50
-2,Narcis 'Baby Jean' (25 bollen),bollen,6.25
-3,Hyacint 'Pink Pearl' (3 stuks),bollen,8.95
-4,Krokus-mix (50 bollen),bollen,9.95
-5,Zonnebloem 'Giant Russian' (zaden),zaden,3.50
-6,Zoete erwt 'Spencer' (zaden),zaden,2.95
-7,Grasmix weidebloemen (1 kg),zaden,12.50
-8,Rozen 'Avalanche' (10 stengels),snijbloemen,14.95
-9,Tulpenboeket gemengd (15 stengels),snijbloemen,11.50
-10,Zonnebloemboeket (5 stengels),snijbloemen,9.75
-11,Gerbera 'Mini Mix' (10 stengels),snijbloemen,8.50
-12,Lelies 'Orient' (5 stengels),snijbloemen,13.25
-13,Orchidee Phalaenopsis (1 pot),kamerplanten,24.95
-14,Monstera Deliciosa (M-pot),kamerplanten,29.95
-15,Sansevieria (M-pot),kamerplanten,19.95
-16,Vetplanten assortiment (3 stuks),kamerplanten,12.95
-17,Kalenderjaarloos bloemenpakket,abonnementen,49.95
-18,Proefabonnement wekelijks,abonnementen,27.50
-19,Vaas 'Delfts Blauw' (30 cm),accessoires,17.95
-20,Snoeischaar professioneel,accessoires,22.50
-21,Bloempot terracotta (set van 3),accessoires,15.95
-22,Kompost 20 liter,accessoires,8.95
+product_id,naam,categorie,prijs,inkoopprijs,leverancier_id
+1,Tulp 'Paul Scherer' (25 bollen),bollen,7.50,4.54,1
+2,Narcis 'Baby Jean' (25 bollen),bollen,6.25,3.82,1
+3,Hyacint 'Pink Pearl' (3 stuks),bollen,8.95,4.50,2
+4,Krokus-mix (50 bollen),bollen,9.95,5.76,1
+5,Narcis 'Replete' (25 bollen),bollen,6.95,3.76,2
+6,Iris 'Hollandia' (10 bollen),bollen,7.95,3.36,2
+7,Allium 'Purple Sensation' (15 bollen),bollen,11.50,7.10,1
+8,Dahlia 'Café au Lait' (5 knollen),bollen,13.95,7.31,2
+9,Lelie 'Stargazer' (10 bollen),bollen,10.50,6.01,2
+10,Gladiool 'Prins Claus' (10 bollen),bollen,8.75,5.16,2
+11,Wildebollenmix (40 bollen),bollen,12.50,5.78,2
+12,Zonnebloem 'Giant Russian' (zaden),zaden,3.50,1.99,3
+13,Zoete erwt 'Spencer' (zaden),zaden,2.95,1.57,3
+14,Grasmix weidebloemen (1 kg),zaden,12.50,6.22,3
+15,Lavendel 'Hidcote' (zaden),zaden,3.25,2.01,3
+16,Phacelia groenbemester (500 g),zaden,6.50,3.17,3
+17,Bloemenmix 'Vlinderhof' (zaden),zaden,4.95,2.37,3
+18,Korenbloem (zaden),zaden,2.75,1.53,3
+19,Kruidenmix potten (zaden),zaden,3.15,1.58,3
+20,Rode miet & klaproos (zaden),zaden,2.95,1.84,3
+21,Rozen 'Avalanche' (10 stengels),snijbloemen,14.95,8.03,5
+22,Tulpenboeket gemengd (15 stengels),snijbloemen,11.50,7.03,5
+23,Zonnebloemboeket (5 stengels),snijbloemen,9.75,4.75,7
+24,Gerbera 'Mini Mix' (10 stengels),snijbloemen,8.50,5.00,5
+25,Lelies 'Orient' (5 stengels),snijbloemen,13.25,7.33,7
+26,Ranunkel (10 stengels),snijbloemen,10.95,7.09,2
+27,Anjer 'Sociable' (10 stengels),snijbloemen,7.95,3.80,6
+28,Freesia gemengd (10 stengels),snijbloemen,8.25,4.43,4
+29,Lisianthus 'Rosanne' (7 stengels),snijbloemen,11.95,7.00,6
+30,Eucalyptus 'Baby Blue' (5 stengels),snijbloemen,6.95,3.67,2
+31,Pioenroos 'Coral Charm' (7 stengels),snijbloemen,16.50,7.30,4
+32,Droogbloemen 'Dune' boeket (7 stuks),snijbloemen,12.75,6.59,4
+33,Orchidee Phalaenopsis (1 pot),kamerplanten,24.95,12.31,8
+34,Monstera Deliciosa (M-pot),kamerplanten,29.95,15.98,8
+35,Sansevieria (M-pot),kamerplanten,19.95,10.42,8
+36,Vetplanten assortiment (3 stuks),kamerplanten,12.95,6.53,8
+37,Arecapalm (M-pot),kamerplanten,27.50,13.34,8
+38,Philodendron 'Brasil' (M-pot),kamerplanten,21.95,10.43,7
+39,Lepelleplant (M-pot),kamerplanten,23.50,11.65,7
+40,Aloë vera (S-pot),kamerplanten,9.95,4.64,8
+41,Geldboom Pachira (M-pot),kamerplanten,25.50,12.40,8
+42,Hangende vetplant (hangmand),kamerplanten,14.50,9.50,7
+43,Kalenderjaarabonnement bloemenpakket,abonnementen,49.95,24.53,2
+44,Proefabonnement wekelijks,abonnementen,27.50,12.73,2
+45,Maandabonnement bloemen (4 bezorgingen),abonnementen,42.50,25.07,2
+46,Seizoensabonnement 10 weken,abonnementen,99.95,48.56,2
+47,Zakelijkabonnement kantoor (wekelijks),abonnementen,64.95,35.90,2
+48,Vaas 'Delfts Blauw' (30 cm),accessoires,17.95,10.29,10
+49,Snoeischaar professioneel,accessoires,22.50,10.00,9
+50,Bloempot terracotta (set van 3),accessoires,15.95,8.90,10
+51,Kompost 20 liter,accessoires,8.95,4.79,10
+52,Vloeibare bloemenvoeding (500 ml),accessoires,6.95,3.23,9
+53,Tuinset 3-delig RVS,accessoires,19.95,9.59,10
+54,Plantenspuit 'Mist' (300 ml),accessoires,9.75,4.36,9
+55,Bindraad & bloementape set,accessoires,7.50,3.87,9
+56,Geurkaars 'Passiebloesem',accessoires,13.50,7.54,9
+57,Cadeaubon Knol & Bloei (naar keuze),accessoires,25.00,11.41,10

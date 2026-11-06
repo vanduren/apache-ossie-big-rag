@@ -131,11 +131,14 @@ class DemoApp(ctk.CTk):
         con = sqlite3.connect(self.dbpad)
         n_orders = con.execute("SELECT COUNT(*) FROM bestellingen").fetchone()[0]
         n_regels = con.execute("SELECT COUNT(*) FROM orderregels").fetchone()[0]
+        n_reviews = con.execute("SELECT COUNT(*) FROM beoordelingen").fetchone()[0]
+        n_verzendingen = con.execute("SELECT COUNT(*) FROM verzendingen").fetchone()[0]
         con.close()
         self.status.configure(
             text=f"model '{self.model.name}' · {len(self.model.datasets)} datasets · "
                  f"{metingen} metrics · {len(self.model.relationships)} relaties · "
-                 f"SQLite: {n_orders} bestellingen / {n_regels} regels")
+                 f"SQLite: {n_orders} bestellingen / {n_regels} regels / "
+                 f"{n_verzendingen} verzendingen / {n_reviews} beoordelingen")
         with open(self.modelpad, encoding="utf-8") as f:
             self.model_yaml.delete("1.0", "end")
             self.model_yaml.insert("1.0", f.read())
@@ -290,15 +293,19 @@ class DemoApp(ctk.CTk):
             "  • wat is de omzet per categorie?\n"
             "  • hoeveel verkochte stuks per maand?\n"
             "  • gemiddelde orderwaarde per stad\n"
-            "  • omzet per klant per segment\n"
-            "  • gemiddelde korting per categorie\n")
+            "  • wat is de brutomarge per leverancier?\n"
+            "  • gemiddelde levertijd per bezorger\n"
+            "  • gemiddelde sterren per categorie\n"
+            "  • omzet per kanaal\n")
 
     def _vul_voorbeelden(self):
         for w in self.voorbeeld_scroll.winfo_children():
             w.destroy()
         vragen = list((self.model.ai_context or {}).get("examples", []))
         vragen += ["wat is de omzet per categorie", "verkochte stuks per maand",
-                   "gemiddelde korting per categorie", "wat is de omzet_per_klant"]
+                   "wat is de brutomarge per leverancier", "gemiddelde levertijd per bezorger",
+                   "gemiddelde sterren per categorie", "omzet per kanaal",
+                   "gemiddelde orderwaarde per stad"]
         for i, v in enumerate(dict.fromkeys(vragen)):
             ctk.CTkButton(self.voorbeeld_scroll, text=v, width=220,
                           fg_color="#2a4d68", hover_color="#3b8ed0",

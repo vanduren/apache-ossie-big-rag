@@ -3,8 +3,9 @@
 ## Het probleem
 
 Knol & Bloei is een bloemen- en bollenwebshop. Over een paar jaar is er een SQLite-database aan verkoopdata: `klanten`,
-`producten`, `bestellingen` en
-`orderregels`. Drie partijen willen antwoorden op dezelfde of gelijkende vragen:
+`leveranciers`, `producten`, `bestellingen`,
+`orderregels`, `verzendingen` en
+`beoordelingen`. Drie partijen willen antwoorden op dezelfde of gelijkende vragen:
 
 1. **Het dashboard-team** bouwt een internal app (deze demo: CustomTkinter).
 2. **De data-analist** werkt op de commandoregel (deze demo: `cli_vraag.py`).
@@ -25,13 +26,13 @@ Specification* (v0.2.0.dev0):
 | Ossie-bouwsteen | In deze demo |
 |---|---|
 | **Semantic Model** | `knol_en_bloei` — één document = één model |
-| **Datasets** | `orderregels` (fact), `bestellingen`, `producten`, `klanten` (dimensies) |
+| **Datasets** | `orderregels` (fact), `verzendingen` en `beoordelingen` (feitten), `bestellingen`, `producten`, `leveranciers`, `klanten` (dimensies) |
 | **Fields** | o.a. computed: `regel_bedrag = aantal * prijs_per_stuk * (1 - korting)` — één definitie, overal identiek |
-| **Metrics (dataset-scope)** | `orderregels.omzet`, `bruto_omzet`, `verkochte_stukken`, `gemiddelde_korting` |
-| **Metrics (model-scope)** | `omzet_per_klant`, `gemiddelde_orderwaarde` — tellen `dataset.veld` over meerdere datasets |
-| **Relationships** | `orderregels → bestellingen → klanten`, `orderregels → producten` |
-| **Time-dimensions** | `besteldatum`, `bestel_maand` (`dimension.is_time: true`) |
-| **ai_context** | instructies, synoniemen ("revenue", "verkopen", "AOV") en voorbeeldvragen |
+| **Metrics (dataset-scope)** | `orderregels.omzet`, `bruto_omzet`, `verkochte_stukken`, `gemiddelde_korting`, `verzendingen.gemiddelde_levertijd`, `beoordelingen.gemiddelde_sterren`, … |
+| **Metrics (model-scope)** | `omzet_per_klant`, `gemiddelde_orderwaarde`, `brutomarge`, `margepercentage`, `verzendkosten_per_order` — tellen `dataset.veld` over meerdere datasets |
+| **Relationships** | `orderregels → bestellingen → klanten`, `orderregels → producten → leveranciers`, `verzendingen → bestellingen`, `beoordelingen → klanten/producten` |
+| **Time-dimensions** | `besteldatum`, `bestel_maand`, `verzend_datum`, `beoordeeld_op` (`dimension.is_time: true`) |
+| **ai_context** | instructies, synoniemen ("revenue", "verkopen", "AOV", "marge", "koerier") en voorbeeldvragen |
 | **custom_extensions** | vendor-metadata (hier: SQLite-pad), door Ossie gedragen maar niet geïnterpreteerd |
 
 Twee spec-details die in de demo zichtbaar zijn:
@@ -51,6 +52,9 @@ Twee spec-details die in de demo zichtbaar zijn:
 ```
 orderregels(bestelling_id, regel_nr, product_id, aantal, prijs_per_stuk, korting)
 ```
+
+*(…en zes soortgelijke tabellen: klanten, leveranciers, producten, bestellingen,
+verzendingen en beoordelingen.)*
 
 ### 2. Model: beschrijf de semantiek, schrijf géén SQL
 
@@ -79,7 +83,8 @@ Deze demo's "consumer" (`app/ossie_core.py`) doet wat elke BI-tool of agent
 met een Ossie-model zou doen:
 
 1. lees het model en los `dataset.veld`-referenties op (name resolution);
-2. vind de nodige joins via `relationships` (ook 2-hop: orden→klanten);
+2. vind de nodige joins via `relationships` (2-hop: `bestellingen → klanten`,
+   3-hop: `orderregels → producten → leveranciers`);
 3. vervang elke veldnaam door zijn expressie;
 4. genereer `SELECT … GROUP BY … ORDER BY …` en voer uit op SQLite.
 

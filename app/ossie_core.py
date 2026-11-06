@@ -35,6 +35,13 @@ FUNCTIONS = {
     "substr", "substring", "round", "coalesce", "ifnull", "abs", "lower",
     "upper", "length", "strftime", "total",
 }
+# Vulstofdheid die nooit een synoniem-matching "mag" winnen (losstaat hij in
+# geen enkele definitie; in een vraag hoort hij nergens bij)
+STOPWORDS = {
+    "de", "het", "een", "in", "van", "op", "aan", "is", "zijn", "of", "en",
+    "dat", "dit", "er", "als", "maar", "ook", "nog", "voor", "met", "bij",
+    "uit", "te", "bijna", "eens",
+}
 
 _IDENT = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 
@@ -295,7 +302,7 @@ class OssieModel:
         ditzelfde model komen.
         """
         t = vraag.lower()
-        words = set(re.findall(r"[a-zäëïöüéèê]+", t))
+        words = set(re.findall(r"[a-zäëïöüéèê]+", t)) - STOPWORDS
 
         def score(woorden, naam, ctx):
             kandidaten = {naam.lower().replace("_", " "), naam.lower()}

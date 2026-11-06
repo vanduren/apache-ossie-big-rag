@@ -6,11 +6,17 @@ Voorbeelden:
     uv run python scripts/cli_vraag.py "wat is de omzet per categorie"
     uv run python scripts/cli_vraag.py "verkochte stuks per maand"
     uv run python scripts/cli_vraag.py "gemiddelde orderwaarde per stad"
+    uv run python scripts/cli_vraag.py "wat is de brutomarge per leverancier"
+    uv run python scripts/cli_vraag.py "margepercentage per land"
+    uv run python scripts/cli_vraag.py "gemiddelde levertijd per bezorger"
+    uv run python scripts/cli_vraag.py "gemiddelde sterren per categorie"
+    uv run python scripts/cli_vraag.py "wat zijn de bezorgkosten per maand"
     uv run python scripts/cli_vraag.py --leg uit              # model + validatie
     uv run python scripts/cli_vraag.py --sql --vraag "omzet per product"
 
 Of zonder AI-match, met expliciete referenties:
     uv run python scripts/cli_vraag.py --metric orderregels.omzet --dimensie producten.categorie
+    uv run python scripts/cli_vraag.py --metric brutomarge --dimensie leveranciers.land
 """
 import argparse
 import os

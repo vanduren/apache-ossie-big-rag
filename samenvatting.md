@@ -21,8 +21,9 @@ handmatige vertaling en hallucinerende AI oplevert.
 
 ## De use case: bloemenwebshop "Knol & Bloei"
 
-Een middelgrote bloemenwebshop met vier tabellen in **SQLite**:
-`klanten`, `producten`, `bestellingen`, `orderregels`. Drie "tools" — een
+Een middelgrote bloemenwebshop met zeven tabellen in **SQLite**:
+`klanten`, `leveranciers`, `producten`, `bestellingen`, `orderregels`,
+`verzendingen` en `beoordelingen`. Drie "tools" — een
 desktop-dashboard (CustomTkinter), een commandoregel en een AI-agent — moeten
 elk hetzelfde antwoord geven op "wat is de omzet per categorie?".
 
@@ -32,17 +33,19 @@ Knol & Bloei **één Ossie-model** (`models/knol_en_bloei.ossie.yaml`):
 - **datasets** met velden (incl. computed fields zoals `regel_bedrag`);
 - **dataset-metrics** zoals `omzet = SUM(regel_bedrag)`;
 - **model-metrics** die over datasets spreiden:
-  `gemiddelde_orderwaarde = SUM(orderregels.regel_bedrag) / COUNT(DISTINCT bestellingen.bestelling_id)`;
-- **relationships** als joins;
-- **ai_context** met synoniemen ("revenue", "verkopen") en voorbeeldvragen,
-  zodat een AI-agent de juiste metric kiest.
+  `gemiddelde_orderwaarde = SUM(orderregels.regel_bedrag) / COUNT(DISTINCT bestellingen.bestelling_id)`
+  en `brutomarge = SUM(orderregels.regel_bedrag) - SUM(orderregels.aantal * producten.inkoopprijs)`;
+- **relationships** als joins — tot drie hops diep, van
+  `orderregels` via `producten` naar `leveranciers` of van `beoordelingen` naar `klanten`;
+- **ai_context** met synoniemen ("revenue", "verkopen", "marge", "koerier") en
+  voorbeeldvragen, zodat een AI-agent de juiste metric kiest.
 
 ## Wat er is gebouwd
 
 | Onderdeel | Pad |
 |---|---|
 | Ossie-semantisch model (demo van de core-spec) | `models/knol_en_bloei.ossie.yaml` |
-| Voorbeeld-databestanden (CSV) | `data/*.csv` (40 klanten, 22 producten, 320 bestellingen, 665 orderregels) |
+| Voorbeeld-databestanden (CSV) | `data/*.csv` (150 klanten, 10 leveranciers, 57 producten, 1.800 bestellingen, 4.451 orderregels, 1.661 verzendingen, 1.100 beoordelingen) |
 | SQLite-database | `data/webshop.db` (bouwscript: `scripts/bouw_database.py`) |
 | Ossie-"consumer": loader, validatie, SQL-compiler, AI-match | `app/ossie_core.py` |
 | **User interface (CustomTkinter / Tk)** | `app/webshop_demo.py` |

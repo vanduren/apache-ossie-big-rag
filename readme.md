@@ -26,9 +26,12 @@ apache-ossie/
 │   └── knol_en_bloei.ossie.yaml   ← hét Ossie-model (datasets, metrics, relaties, ai_context)
 ├── data/
 │   ├── klanten.csv                ← voorbeeldbestanden (bron)
+│   ├── leveranciers.csv
 │   ├── producten.csv
 │   ├── bestellingen.csv
 │   ├── orderregels.csv
+│   ├── verzendingen.csv
+│   ├── beoordelingen.csv
 │   └── webshop.db                 ← SQLite-database (gegenereerd, meegeleverd)
 ├── app/
 │   ├── ossie_core.py              ← Ossie-"consumer": loader, validatie, SQL-compiler, AI-match
@@ -62,7 +65,9 @@ Commandoregel-versie (zelfde model, zelfde compiler, andere tool):
 uv run python scripts/cli_vraag.py --leg                          # model + validatie
 uv run python scripts/cli_vraag.py "wat is de omzet per categorie"
 uv run python scripts/cli_vraag.py "gemiddelde orderwaarde per stad"
-uv run python scripts/cli_vraag.py "hoeveel verkochte stuks per maand"
+uv run python scripts/cli_vraag.py "wat is de brutomarge per leverancier"
+uv run python scripts/cli_vraag.py "gemiddelde levertijd per bezorger"
+uv run python scripts/cli_vraag.py "gemiddelde sterren per categorie"
 ```
 
 ## Wat de interface laat zien
@@ -71,7 +76,8 @@ uv run python scripts/cli_vraag.py "hoeveel verkochte stuks per maand"
 (deze worden uit het Ossie-model zelf opgebouwd). Druk op ▶ en de tool
 compileert ter plekke SQLite-SQL: veldnamen worden door hun expressies uit het
 model vervangen, joins worden via `relationships` gezocht (meer-hop, bv.
-`orderregels → bestellingen → klanten`). Het gegenereerde SQL, de resultaattabel
+`orderregels → bestellingen → klanten` of zelfs `orderregels → producten → leveranciers`).
+Het gegenereerde SQL, de resultaattabel
 en een staafdiagram verschijnen naast elkaar. Er staat géén handmatige
 query in de applicatie.
 
@@ -115,7 +121,9 @@ metrics).
 
 ## Herhaalbaar voorbeeld
 
-Deterministische gegenereerde data (seed 42): **40 klanten**, **22 producten**
-(5 categorieën), **320 bestellingen** en **665 orderregels** over
+Deterministische gegenereerde data (seed 42), zeven tabellen:
+**150 klanten**, **10 leveranciers** (6 landen), **57 producten** (6 categorieën,
+incl. inkoopprijs), **1.800 bestellingen** (met bestelkanaal), **4.451 orderregels**,
+**1.661 verzendingen** (4 bezorgdiensten) en **1.100 beoordelingen** over
 juni 2025 – oktober 2026, met seizoenspieken in het voor- en najaar.
 Herbouw altijd identiek: `uv run python scripts/genereer_data.py`.

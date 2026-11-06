@@ -1,41 +1,151 @@
 klant_id,naam,stad,segment
-1,Sanne de Vries,Eindhoven,zakelijk
-2,Willem Bakker,Haarlem,zakelijk
-3,Renske Jansen,Amsterdam,zakelijk
-4,Femke Brouwer,Arnhem,zakelijk
-5,Dirk de Wit,Maastricht,zakelijk
-6,Guus Mulder,Amsterdam,particulier
-7,Lisa Hendriks,Groningen,particulier
-8,Dirk Bos,Rotterdam,zakelijk
-9,Sanne Vos,Groningen,particulier
-10,Anna van Leeuwen,Haarlem,zakelijk
-11,Sjoerd van Dijk,Haarlem,particulier
-12,Eva Vos,Arnhem,zakelijk
-13,Pieter Jansen,Utrecht,particulier
-14,Pieter de Boer,Rotterdam,particulier
-15,Thijs Vos,Den Haag,particulier
-16,Dirk Mulder,Rotterdam,particulier
-17,Lisa de Wit,Utrecht,zakelijk
-18,Sjoerd Mulder,Haarlem,zakelijk
-19,Kees Jansen,Utrecht,particulier
-20,Kees Peters,Eindhoven,zakelijk
-21,Guus Bos,Utrecht,particulier
-22,Sjoerd van Leeuwen,Den Haag,particulier
-23,Femke de Wit,Haarlem,particulier
-24,Guus Hendriks,Arnhem,particulier
-25,Femke Visser,Haarlem,particulier
-26,Anna Bakker,Den Haag,particulier
-27,Renske Vermeer,Rotterdam,particulier
-28,Eva van Leeuwen,Haarlem,particulier
-29,Maud de Vries,Rotterdam,particulier
-30,Maud Mulder,Groningen,zakelijk
-31,Renske Smit,Leiden,zakelijk
-32,Bram Brouwer,Den Haag,particulier
-33,Sanne de Groot,Haarlem,particulier
-34,Willem Vos,Den Haag,particulier
-35,Aad de Vries,Arnhem,particulier
-36,Jan Bakker,Groningen,particulier
-37,Noor de Boer,Amsterdam,zakelijk
-38,Guus van Dijk,Rotterdam,particulier
-39,Pieter de Wit,Den Haag,zakelijk
-40,Lieke de Wit,Den Haag,particulier
+1,Femke de Vries,Haarlem,zakelijk
+2,Bram Driessen,Utrecht,particulier
+3,Lisa Dijkstra,Zwolle,zakelijk
+4,Lisa Meijer,Leiden,particulier
+5,Anna de Wit,Maastricht,particulier
+6,Sem de Boer,Almere,particulier
+7,Jan Kok,Groningen,particulier
+8,Lotte Mulder,Eindhoven,zakelijk
+9,Lotte Bakker,Den Haag,particulier
+10,Mila Willems,Breda,particulier
+11,Pieter Driessen,Almere,particulier
+12,Floor van Dijk,Arnhem,particulier
+13,Luuk Dijkstra,Maastricht,particulier
+14,Pieter Hofman,Leiden,particulier
+15,Lisa Willems,Leiden,particulier
+16,Floor Mulder,Almere,particulier
+17,Luuk Smit,Breda,particulier
+18,Maud Post,Den Haag,particulier
+19,Kees de Wit,Leiden,zakelijk
+20,Thijs Hofman,Amersfoort,particulier
+21,Sanne de Boer,Rotterdam,particulier
+22,Ruben Mulder,Den Haag,zakelijk
+23,Daan Meijer,Leuwarden,particulier
+24,Fleur Visser,Haarlem,zakelijk
+25,Aad Driessen,Zwolle,particulier
+26,Ruben Vos,Leiden,particulier
+27,Bram Brouwer,Leuwarden,zakelijk
+28,Sanne Willems,Utrecht,zakelijk
+29,Kees Peeters,Zwolle,particulier
+30,Floor Peters,Almere,particulier
+31,Jan Hofman,Utrecht,particulier
+32,Maud Kok,Amersfoort,zakelijk
+33,Tess Smit,Almere,zakelijk
+34,Aad Brouwer,Groningen,particulier
+35,Dirk Willems,Arnhem,particulier
+36,Sjoerd Visser,Breda,particulier
+37,Jan Vermeer,Amersfoort,particulier
+38,Femke Zandbergen,Breda,particulier
+39,Eva de Boer,Rotterdam,zakelijk
+40,Lisa van Dijk,Leuwarden,particulier
+41,Bram Visser,Leuwarden,particulier
+42,Kees Mulder,Zwolle,particulier
+43,Sjoerd Post,Arnhem,particulier
+44,Luuk van Leeuwen,Almere,zakelijk
+45,Thijs van Dijk,Amersfoort,zakelijk
+46,Thijs Dijkstra,Leiden,zakelijk
+47,Willem Roos,Rotterdam,particulier
+48,Willem Brouwer,Leiden,particulier
+49,Sasker Meijer,Eindhoven,particulier
+50,Jesse de Boer,Leuwarden,particulier
+51,Sjoerd Bakker,Utrecht,particulier
+52,Mila Hendriks,Zwolle,particulier
+53,Sanne Hofman,Utrecht,zakelijk
+54,Lotte Peeters,Utrecht,zakelijk
+55,Sjoerd de Wit,Almere,zakelijk
+56,Julia Mulder,Almere,zakelijk
+57,Willem van Leeuwen,Utrecht,zakelijk
+58,Jan van Dijk,Leiden,zakelijk
+59,Sasker Dekker,Maastricht,particulier
+60,Sanne Smit,Nijmegen,zakelijk
+61,Fleur de Groot,Zwolle,particulier
+62,Sasker Visser,Maastricht,particulier
+63,Sanne Dijkstra,Rotterdam,particulier
+64,Sanne Jansen,Leuwarden,particulier
+65,Kees Jansen,Den Haag,particulier
+66,Willem Vermeer,Den Haag,particulier
+67,Lieke Peters,Utrecht,particulier
+68,Lieke Dijkstra,Rotterdam,particulier
+69,Sem Hofman,Amersfoort,particulier
+70,Renske Hofman,Amersfoort,zakelijk
+71,Ruben Visser,Arnhem,particulier
+72,Willem de Vries,Almere,particulier
+73,Dirk van Dijk,Maastricht,particulier
+74,Bram Zandbergen,Breda,particulier
+75,Lieke Vos,Arnhem,zakelijk
+76,Eva Vermeer,Amsterdam,particulier
+77,Eva Zandbergen,Utrecht,particulier
+78,Bram Mulder,Utrecht,particulier
+79,Noor Mulder,Arnhem,particulier
+80,Lotte Meijer,Haarlem,particulier
+81,Aad Roos,Rotterdam,zakelijk
+82,Tess Crombach,Haarlem,zakelijk
+83,Lotte Kok,Eindhoven,particulier
+84,Aad Smit,Almere,particulier
+85,Tess de Wit,Amsterdam,zakelijk
+86,Noor de Wit,Rotterdam,particulier
+87,Noor Hendriks,Eindhoven,zakelijk
+88,Luuk Roos,Rotterdam,particulier
+89,Lieke Hofman,Utrecht,particulier
+90,Sem Vermeer,Eindhoven,particulier
+91,Lieke Willems,Groningen,particulier
+92,Julia Roos,Zwolle,zakelijk
+93,Sem Peeters,Leiden,particulier
+94,Dirk Peters,Rotterdam,particulier
+95,Thijs Meijer,Almere,particulier
+96,Thijs de Boer,Amsterdam,particulier
+97,Ruben Bos,Haarlem,particulier
+98,Maud Vos,Nijmegen,particulier
+99,Lotte de Vries,Utrecht,particulier
+100,Aad Jansen,Utrecht,particulier
+101,Mila Driessen,Amersfoort,particulier
+102,Femke Peters,Maastricht,particulier
+103,Tess de Vries,Maastricht,particulier
+104,Willem Hofman,Amersfoort,particulier
+105,Femke Driessen,Arnhem,particulier
+106,Sem Bos,Nijmegen,particulier
+107,Bram Meijer,Zwolle,particulier
+108,Floor Hofman,Groningen,particulier
+109,Eva Peters,Amsterdam,particulier
+110,Renske Hendriks,Amersfoort,particulier
+111,Guusje Hofman,Maastricht,particulier
+112,Kees Hofman,Den Haag,particulier
+113,Lotte van Dijk,Leiden,particulier
+114,Thijs Peeters,Maastricht,zakelijk
+115,Pieter de Boer,Leuwarden,particulier
+116,Sem Roos,Maastricht,particulier
+117,Floor Dekker,Nijmegen,zakelijk
+118,Jan Roos,Utrecht,particulier
+119,Thijs Smit,Almere,zakelijk
+120,Lieke Zandbergen,Utrecht,particulier
+121,Fleur Hofman,Amersfoort,particulier
+122,Guusje Vermeer,Zwolle,particulier
+123,Guusje Roos,Groningen,particulier
+124,Jesse van Leeuwen,Haarlem,particulier
+125,Sasker Kuiper,Leiden,particulier
+126,Willem Post,Arnhem,zakelijk
+127,Lotte Bos,Den Haag,zakelijk
+128,Thijs Peters,Eindhoven,particulier
+129,Willem Hendriks,Zwolle,particulier
+130,Fleur Hendriks,Rotterdam,zakelijk
+131,Sem Peters,Amsterdam,particulier
+132,Jan Vos,Arnhem,particulier
+133,Sem de Wit,Leiden,particulier
+134,Maud Hendriks,Leuwarden,zakelijk
+135,Lotte Hofman,Nijmegen,particulier
+136,Fleur Zandbergen,Eindhoven,particulier
+137,Anna Zandbergen,Nijmegen,particulier
+138,Anna van Dijk,Zwolle,zakelijk
+139,Fleur Smit,Rotterdam,particulier
+140,Fleur Bos,Amersfoort,particulier
+141,Sem Mulder,Den Haag,particulier
+142,Sanne Vos,Leiden,particulier
+143,Pieter Kok,Amsterdam,particulier
+144,Sjoerd Crombach,Amsterdam,particulier
+145,Lieke Visser,Leuwarden,particulier
+146,Renske van Leeuwen,Haarlem,particulier
+147,Kees Vermeer,Utrecht,particulier
+148,Kees de Groot,Utrecht,particulier
+149,Eva Dijkstra,Nijmegen,particulier
+150,Sjoerd van Dijk,Leiden,zakelijk

@@ -8,20 +8,27 @@
 
 version: 0.2.0.dev0
 name: knol_en_bloei
-description: Verkoopanalyse voor bloemenwebshop "Knol & Bloei" (omzet, volumes, klanten en producten)
+description: Verkoopanalyse voor bloemenwebshop "Knol & Bloei" (omzet, marge, volumes, klanten, producten, leveranciers, bezorging en beoordelingen)
 
 ai_context:
   instructions: >
     Gebruik dit model voor alle verkoopvragen van Knol & Bloei.
     Bedragen zijn in euro's (incl. btw). "Omzet" betekent altijd SUM(regel_bedrag)
-    over orderregels, inclusief korting. Gebruik bestel_maand voor maandrapportages.
+    over orderregels, inclusief korting; "marge" gaat uit van het verschil tussen
+    verkoop- en inkoopprijs (model-metrics brutomarge en margepercentage).
+    Gebruik bestel_maand voor maandrapportages. Beoordelingen (sterren) en
+    verzendingen (bezorger, levertijd) hebben hun eigen feittabellen.
   synonyms:
     - verkoopanalyse
     - sales
+    - klantanalyse
   examples:
     - "Wat is de omzet per categorie?"
     - "Hoeveel orders zijn er per maand geplaatst?"
     - "Welke stad geeft het meeste geld uit?"
+    - "Wat is de brutomarge per leverancier?"
+    - "Hoe lang duurt de bezorging gemiddeld per bezorger?"
+    - "Wat zijn de bezorgkosten per maand?"
 
 datasets:
   # ---------------------------------------------------------------- fact
@@ -89,7 +96,7 @@ datasets:
         datatype: Decimal
         description: Totale netto-omzet (na korting)
         ai_context:
-          synonyms: ["omzet", "revenue", "verkopen", "omzet in euro"]
+          synonyms: ["omzet", "revenue", "verkopen", "omzet in euro", "bestedingen", "geld"]
 
       - name: bruto_omzet
         expression:
@@ -161,6 +168,14 @@ datasets:
         datatype: Boolean
         description: Is de bestelling geleverd? (1=ja)
 
+      - name: bestelbron
+        expression:
+          sql: bestelbron
+        datatype: String
+        description: Verkooppkanaal (website, mobiele app, e-mail)
+        ai_context:
+          synonyms: ["kanaal", "bron", "bestelkanaal", "hoe besteld"]
+
     metrics:
       - name: aantal_bestellingen
         expression:
@@ -195,7 +210,7 @@ datasets:
         expression:
           sql: categorie
         datatype: String
-        description: Productcategorie (bollen, snijbloemen, zaden, kamerplanten)
+        description: Productcategorie (bollen, zaden, snijbloemen, kamerplanten, abonnementen, accessoires)
         ai_context:
           synonyms: ["categorie", "soort", "productgroep"]
 
@@ -204,6 +219,200 @@ datasets:
           sql: prijs
         datatype: Decimal
         description: Catalogusprijs per stuk
+        ai_context:
+          synonyms: ["verkoopprijs", "prijs"]
+
+      - name: inkoopprijs
+        expression:
+          sql: inkoopprijs
+        datatype: Decimal
+        description: Inkoopprijs per stuk bij de leverancier
+        ai_context:
+          synonyms: ["inkoop", "inkoopprijs", "cost price"]
+
+      - name: leverancier_id
+        expression:
+          sql: leverancier_id
+        datatype: Integer
+        description: Verwijzing naar de toeleverende leverancier
+
+  # ------------------------------------------------------- leveranciers
+  - name: leveranciers
+    source: webshop.leveranciers
+    primary_key: [leverancier_id]
+    description: Toeleveranciers (kwekers, exporteurs en groothandels) van Knol & Bloei
+    ai_context:
+      synonyms: ["kwekers", "toeleveranciers", "leveranciers"]
+    fields:
+      - name: leverancier_id
+        expression:
+          sql: leverancier_id
+        datatype: Integer
+        description: Leveranciersnummer
+
+      - name: leverancier_naam
+        expression:
+          sql: naam
+        datatype: String
+        description: Naam van de leverancier
+        ai_context:
+          synonyms: ["leverancier", "leveranciers", "kweker", "teler"]
+
+      - name: land
+        expression:
+          sql: land
+        datatype: String
+        description: Land van herkomst (o.a. Nederland, Kenia, Ecuador, Colombia)
+        ai_context:
+          synonyms: ["land", "herkomst", "telerland", "leveranciersland"]
+
+      - name: levertijd_dagen
+        expression:
+          sql: levertijd_dagen
+        datatype: Integer
+        description: Levertermijn van de leverancier in dagen
+        ai_context:
+          synonyms: ["levertermijn", "levertijd leverancier"]
+
+  # -------------------------------------------------------- verzendingen
+  - name: verzendingen
+    source: webshop.verzendingen
+    primary_key: [verzending_id]
+    description: Één verzending per bezorgde bestelling (koerier, kosten en duur)
+    ai_context:
+      synonyms: ["bezorgingen", "leveringen", "verzendingen"]
+    fields:
+      - name: verzending_id
+        expression:
+          sql: verzending_id
+        datatype: Integer
+        description: Verzendingsnummer
+
+      - name: bestelling_id
+        expression:
+          sql: bestelling_id
+        datatype: Integer
+        description: Verwijzing naar de bestelling (1:1)
+
+      - name: bezorger
+        expression:
+          sql: bezorger
+        datatype: String
+        description: Uitvoerende bezorgdienst (PostNL, DHL, Budbee, eigen bezorgdienst)
+        ai_context:
+          synonyms: ["bezorger", "koerier", "bezorgdienst"]
+
+      - name: verzendkosten
+        expression:
+          sql: verzendkosten
+        datatype: Decimal
+        description: Verzendkosten van de verzending in euro's
+        ai_context:
+          synonyms: ["verzendingskosten", "kosten van de bezorging"]
+
+      - name: verzend_datum
+        expression:
+          sql: verzend_datum
+        datatype: Date
+        dimension:
+          is_time: true
+        description: Datum van verzending
+        ai_context:
+          synonyms: ["verzenddatum", "verzendingdatum"]
+
+      - name: levertijd_dagen
+        expression:
+          sql: levertijd_dagen
+        datatype: Integer
+        description: Aantal dagen tussen bestelling en bezorging
+        ai_context:
+          synonyms: ["bezorgduur", "bezorgtijd", "levertijd van bezorging"]
+
+    metrics:
+      - name: gemiddelde_verzendkosten
+        expression:
+          sql: AVG(verzendkosten)
+        datatype: Decimal
+        description: Gemiddelde verzendkosten per verzending
+        ai_context:
+          synonyms: ["gemiddelde verzendkosten", "gemiddelde bezorgkosten"]
+
+      - name: totale_verzendkosten
+        expression:
+          sql: SUM(verzendkosten)
+        datatype: Decimal
+        description: Totale verzendkosten over alle verzendingen
+        ai_context:
+          synonyms: ["verzendkosten", "totale verzendkosten", "bezorgkosten"]
+
+      - name: gemiddelde_levertijd
+        expression:
+          sql: AVG(levertijd_dagen)
+        datatype: Float
+        description: Gemiddelde bezorgduur in dagen
+        ai_context:
+          synonyms: ["gemiddelde levertijd", "levertijd", "bezorgduur", "gemiddelde bezorgduur", "hoe lang duurt de bezorging"]
+
+  # ------------------------------------------------------- beoordelingen
+  - name: beoordelingen
+    source: webshop.beoordelingen
+    primary_key: [beoordeling_id]
+    description: Klantbeoordelingen (1-5 sterren) op gekochte producten
+    ai_context:
+      synonyms: ["reviews", "klantbeoordelingen"]
+    fields:
+      - name: beoordeling_id
+        expression:
+          sql: beoordeling_id
+        datatype: Integer
+        description: Beoordelingsnummer
+
+      - name: klant_id
+        expression:
+          sql: klant_id
+        datatype: Integer
+        description: Reagerende klant
+
+      - name: product_id
+        expression:
+          sql: product_id
+        datatype: Integer
+        description: Beoordeeld product
+
+      - name: sterren
+        expression:
+          sql: sterren
+        datatype: Integer
+        description: Aantal sterren (1 = slecht … 5 = uitstekend)
+        ai_context:
+          synonyms: ["sterren", "score", "beoordelingsscore", "stars"]
+
+      - name: beoordeeld_op
+        expression:
+          sql: beoordeeld_op
+        datatype: Date
+        dimension:
+          is_time: true
+        description: Datum van de beoordeling
+        ai_context:
+          synonyms: ["beoordeldatum"]
+
+    metrics:
+      - name: gemiddelde_sterren
+        expression:
+          sql: AVG(sterren)
+        datatype: Float
+        description: Gemiddelde sterrenscore van de beoordelingen
+        ai_context:
+          synonyms: ["gemiddelde sterren", "gemiddelde score", "sterrenscore", "hoe tevreden"]
+
+      - name: aantal_beoordelingen
+        expression:
+          sql: COUNT(DISTINCT source.beoordeling_id)
+        datatype: Integer
+        description: Aantal geplaatste beoordelingen
+        ai_context:
+          synonyms: ["aantal beoordelingen", "aantal reviews", "reviews"]
 
   - name: klanten
     source: webshop.klanten
@@ -262,6 +471,30 @@ relationships:
     from_columns: [klant_id]
     to_columns: [klant_id]
 
+  - name: producten_naar_leveranciers
+    from: producten
+    to: leveranciers
+    from_columns: [leverancier_id]
+    to_columns: [leverancier_id]
+
+  - name: bestellingen_naar_verzendingen
+    from: bestellingen
+    to: verzendingen
+    from_columns: [bestelling_id]
+    to_columns: [bestelling_id]
+
+  - name: beoordelingen_naar_klanten
+    from: beoordelingen
+    to: klanten
+    from_columns: [klant_id]
+    to_columns: [klant_id]
+
+  - name: beoordelingen_naar_producten
+    from: beoordelingen
+    to: producten
+    from_columns: [product_id]
+    to_columns: [product_id]
+
 # Model-scope metrics: combineren velden over meerdere datasets (dataset.veld)
 metrics:
   - name: omzet_per_klant
@@ -279,6 +512,30 @@ metrics:
     description: Gemiddeld besteedbedrag per bestelling
     ai_context:
       synonyms: ["gemiddelde orderwaarde", "average order value", "AOV"]
+
+  - name: brutomarge
+    expression:
+      sql: SUM(orderregels.regel_bedrag) - SUM(orderregels.aantal * producten.inkoopprijs)
+    datatype: Decimal
+    description: Brutomarge — verkoopbedrag na korting minus inkoopwaarde van de verkochte stuks
+    ai_context:
+      synonyms: ["brutomarge", "marge", "winst", "gross margin"]
+
+  - name: margepercentage
+    expression:
+      sql: 1 - SUM(orderregels.aantal * producten.inkoopprijs) / SUM(orderregels.regel_bedrag)
+    datatype: Float
+    description: Brutomarge als deel van de netto-omzet (0.0 - 1.0)
+    ai_context:
+      synonyms: ["margepercentage", "marge in procent", "winstmarge", "brutomarge percentage"]
+
+  - name: verzendkosten_per_order
+    expression:
+      sql: SUM(verzendingen.verzendkosten) / COUNT(DISTINCT bestellingen.bestelling_id)
+    datatype: Decimal
+    description: Gemiddelde verzendkosten per bestelde order (met bezorging)
+    ai_context:
+      synonyms: ["verzendkosten per order", "gemiddelde verzendkosten per bestelling"]
 
 # Vendor-extensies: door Ossie gedragen, maar niet geïnterpreteerd
 custom_extensions:
