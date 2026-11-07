@@ -16,8 +16,8 @@ Een complete, werkende demo van [Apache Ossie (incubating)](https://ossie.apache
 | [`samenvatting.md`](samenvatting.md) | Wat is Apache Ossie + wat deze demo toont |
 | [`docs/use-case.md`](docs/use-case.md) | De use case en hoe Ossie gebruikt *moet* worden |
 | [`docs/demo-script.md`](docs/demo-script.md) | Stap-voor-stap demo voor een publiek (~12 min) |
-| [`prompts.md`](prompts.md) | De originele opdracht voor dit project |
 
+| [`prompts.md`](prompts.md) | De originele opdracht voor dit project |
 ## Projectstructuur
 
 ```
@@ -127,3 +127,14 @@ incl. inkoopprijs), **1.800 bestellingen** (met bestelkanaal), **4.451 orderrege
 **1.661 verzendingen** (4 bezorgdiensten) en **1.100 beoordelingen** over
 juni 2025 – oktober 2026, met seizoenspieken in het voor- en najaar.
 Herbouw altijd identiek: `uv run python scripts/genereer_data.py`.
+
+
+# eval
+
+zie: https://github.com/confident-ai/deepeval 
+
+command:
+deepeval test run test_ai_agent.py
+
+set deepval to use local ai:
+Ÿ
